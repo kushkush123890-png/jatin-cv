@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Jatin Kasaudhan - IIM Rohtak | Interactive CV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* === GLOBAL === */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background:#f8f9fc;
+            color:#2d1b3d;
+            line-height:1.7;
+            overflow-x:hidden;
+        }
+        a { text-decoration:none; color:inherit; }
+        img { max-width:100%; display:block; }
+
+        /* === NAV === */
+        nav {
+            position:fixed;
+            top:0; left:0; right:0;
+            background:rgba(45,27,61,0.95);
+            backdrop-filter:blur(10px);
+            z-index:1000;
+            padding:1rem 0;
+            box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        }
+        nav ul { display:flex; justify-content:center; list-style:none; }
+        nav li { margin:0 1.2rem; }
+        nav a { color:#fff; font-weight:500; font-size:1rem; transition:color .3s; }
+        nav a:hover { color:#00bfa5; }
+
+        /* === HERO === */
+        #hero {
+            height:100vh;
+            background:linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            color:#fff;
+            position:relative;
+            overflow:hidden;
+        }
+        #hero::before {
+            content:'';
+            position:absolute;
+            top:0; left:0; right:0; bottom:0;
+            background:rgba(0,0,0,0.3);
+        }
+        .hero-content { position:relative; z-index:1; }
+        .profile-img {
+            width:180px;
+            height:180px;
+            border-radius:50%;
+            border:6px solid #fff;
+            margin-bottom:1.5rem;
+            box-shadow:0 10px 30px rgba(0,0,0,0.2);
+            animation:float 3s infinite ease-in-out;
+        }
+        #hero h1 {
+            font-size:4.2rem;
+            font-weight:700;
+            margin-bottom:.3rem;
+            animation:fadeInDown 1.2s ease-out;
+        }
+        #hero .subtitle {
+            font-size:1.6rem;
+            font-weight:300;
+            margin-bottom:1.5rem;
+            animation:fadeInUp 1.2s ease-out .4s;
+            opacity:0;
+            animation-fill-mode:forwards;
+        }
+        .iim-logo {
+            width:100px;
+            margin-top:1.5rem;
+            animation:float 3s infinite ease-in-out;
+        }
+        .cta-btn {
+            background:#00bfa5;
+            color:#fff;
+            padding:.9rem 2rem;
+            border-radius:50px;
+            font-weight:600;
+            font-size:1.1rem;
+            transition:all .3s;
+            display:inline-block;
+        }
+        .cta-btn:hover { background:#008f7a; transform:scale(1.05); }
+
+        /* === SECTIONS === */
+        section { padding:100px 5%; min-height:80vh; }
+        h2 {
+            text-align:center;
+            font-size:2.8rem;
+            margin-bottom:3rem;
+            color:#2d1b3d;
+            position:relative;
+        }
+        h2::after {
+            content:'';
+            width:80px;
+            height:4px;
+            background:#00bfa5;
+            display:block;
+            margin:15px auto 0;
+            border-radius:2px;
+        }
+
+        /* === TIMELINE === */
+        .timeline { position:relative; max-width:1200px; margin:0 auto; }
+        .timeline::after {
+            content:'';
+            position:absolute;
+            width:6px;
+            background:#00bfa5;
+            top:0; bottom:0; left:50%;
+            margin-left:-3px;
+            border-radius:3px;
+        }
+        .timeline-item {
+            padding:20px 40px;
+            position:relative;
+            width:50%;
+            opacity:0;
+            transform:translateY(50px);
+            transition:all .6s ease-out;
+        }
+        .timeline-item.visible { opacity:1; transform:translateY(0); }
+        .timeline-item::after {
+            content:'';
+            position:absolute;
+            width:20px; height:20px;
+            background:#fff;
+            border:5px solid #00bfa5;
+            border-radius:50%;
+            top:25px; z-index:1;
+        }
+        .left { left:0; }
+        .right { left:50%; }
+        .right::after { left:-16px; }
+        .left::after { right:-16px; }
+        .content {
+            padding:25px 30px;
+            background:#fff;
+            border-radius:12px;
+            box-shadow:0 8px 25px rgba(0,0,0,.08);
+        }
+        .content h3 {
+            color:#6a11cb;
+            font-size:1.4rem;
+            margin-bottom:8px;
+        }
+        .content p { font-size:1rem; color:#555; }
+
+        /* === ACCORDION - FIXED: NO GREEN OVERLAP === */
+        .accordion {
+            background:#00bfa5;
+            color:#fff;
+            cursor:pointer;
+            padding:16px;
+            width:100%;
+            border:none;
+            text-align:center;
+            outline:none;
+            font-size:1rem;
+            font-weight:600;
+            margin-top:12px;
+            border-radius:8px;
+            transition:all .3s;
+            position:relative;
+            z-index:2;
+        }
+        .accordion:hover { background:#008f7a; }
+        .accordion.active { border-bottom-left-radius:0; border-bottom-right-radius:0; }
+        .panel {
+            max-height:0;
+            overflow:hidden;
+            transition:max-height .4s ease-out;
+            background:#fff;
+            border-radius:0 0 8px 8px;
+            margin-top:-8px;
+            position:relative;
+            z-index:1;
+            padding:0 18px;
+        }
+        .panel ul { margin:20px 0; padding-left:20px; }
+        .panel li {
+            margin-bottom:10px;
+            position:relative;
+            padding-left:10px;
+            color:#444;
+            font-size:0.95rem;
+        }
+        .panel li::before {
+            content:'';
+            position:absolute;
+            left:-10px;
+            color:#00bfa5;
+            font-weight:bold;
+        }
+
+        /* === CONTACT === */
+        #contact {
+            background:#2d1b3d;
+            color:#fff;
+            text-align:center;
+        }
+        #contact a { color:#00bfa5; font-weight:600; }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeInDown { from{opacity:0;transform:translateY(-40px);} to{opacity:1;transform:translateY(0);} }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(40px);} to{opacity:1;transform:translateY(0);} }
+        @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+
+        /* === RESPONSIVE === */
+        @media (max-width:768px) {
+            .timeline::after { left:31px; }
+            .timeline-item { width:100%; padding-left:70px; padding-right:25px; }
+            .timeline-item::after { left:15px; }
+            .right { left:0; }
+            #hero h1 { font-size:2.8rem; }
+            #hero .subtitle { font-size:1.2rem; }
+            .profile-img { width:140px; height:140px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#internships">Internships</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#positions">Positions</a></li>
+            <li><a href="#achievements">Achievements</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO: Your Photo + IIM Logo -->
+    <section id="hero">
+        <div class="hero-content">
+            <img src="https://i.ibb.co/1JLMycNx/jatin-kasaudhan.jpg" alt="Jatin Kasaudhan" class="profile-img">
+            <h1>Hi This is JATIN KASAUDHAN</h1>
+            <p class="subtitle">MBA (IPM) 2025-27 | IIM Rohtak</p>
+            <a href="#contact" class="cta-btn">GET IN TOUCH</a>
+            <img src="https://i.ibb.co/j0dFND0/iim-rohtak-logo.png" alt="IIM Rohtak Logo" class="iim-logo">
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section id="education">
+        <h2>Academic Qualifications</h2>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>MBA (IPM) <span style="font-weight:400;">2025-27</span></h3>
+                    <p>Indian Institute of Management Rohtak</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>BBA (IPM) <span style="font-weight:400;">2022-25</span></h3>
+                    <p>Indian Institute of Management Rohtak | <strong>81.50%</strong></p>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>Class XII (ISC) <span style="font-weight:400;">2020-21</span></h3>
+                    <p>Seth M.R. Jaipuria School, Lucknow | <strong>92.66%</strong></p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>Class X (ICSE) <span style="font-weight:400;">2018-19</span></h3>
+                    <p>Seth M.R. Jaipuria School, Lucknow | <strong>97.60%</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Internships -->
+    <section id="internships">
+        <h2>Internships</h2>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>Sodexo India Services Pvt Ltd <span style="font-weight:400;">| Apr–May 2025</span></h3>
+                    <button class="accordion">View Role</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Conducted 300+ exit interviews to uncover key attrition drivers across high-turnover sites, guiding data-backed retention strategy</li>
+                            <li>Developed and visualized attrition insights using Tableau and Excel, enabling leadership to implement targeted HR interventions</li>
+                            <li>Automated ESIC retrieval via Python-Selenium, eliminating 97% manual effort and accelerating document processing by 50%</li>
+                            <li>Streamlined HR processes by integrating automation with workforce analytics, boosting efficiency and supporting retention plans</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>DS Group <span style="font-weight:400;">| May–Jun 2024</span></h3>
+                    <button class="accordion">View Role</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Addressed high labor attrition and significant skill gaps, critically hindering operational efficiency, productivity, and safety of unit</li>
+                            <li>Designed and implemented a Skill Matrix Framework, analyzed detailed attrition data and basis, and launched training modules</li>
+                            <li>Gained participation in skill mapping, significantly improving skills development, safety awareness and efficiency in the unit</li>
+                            <li>Enhanced operational efficiency, reduced employee attrition, and strengthened safety compliance across the workforce in the unit</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>Rgane Technologies <span style="font-weight:400;">| 2024</span></h3>
+                    <button class="accordion">View Role</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Led cross-functional teams, implemented a KPI-driven framework, and handled hiring</li>
+                            <li>Developed and implemented a performance-tracking dashboard to monitor progress</li>
+                            <li>Reduced operational bottlenecks by streamlining coordination and optimizing processes</li>
+                            <li>Led end-to-end recruitment as an HR intern while contributing to operational efficiency</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+        <h2>Academic & Live Projects</h2>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>Mapping Technological Trends in HR <span style="font-weight:400;">| 2024</span></h3>
+                    <button class="accordion">View Details</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Compiled a report on “Mapping Technological Trends in HR” to analyze impact of e-HR</li>
+                            <li>Researched and identified key gaps in HR Technology adoption, driving insights for future</li>
+                            <li>Conducted convenience sampling of 20 HR Professionals to extract industry insights</li>
+                            <li>Identified 6 critical conclusions on the evolving role of Technology on HR practices</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Positions -->
+    <section id="positions">
+        <h2>Positions of Responsibility</h2>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>Junior Coordinator, Placement Prep Committee <span style="font-weight:400;">| 2025-26</span></h3>
+                    <button class="accordion">View Role</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Interacted with external trainers, organizing workshops to improve the soft skills</li>
+                            <li>Organized mock GDs & Personal Interviews to make 720+ students placement ready</li>
+                            <li>Involved in maintaining a database of interviews and mock GD experiences</li>
+                            <li>Invited and coordinated training sessions with Field Experts and Alumni network</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>President, Alumni Association <span style="font-weight:400;">| 2024-26</span></h3>
+                    <button class="accordion">View Role</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Leading an 8-member committee to drive alumni initiatives for school graduates</li>
+                            <li>Organizing alumni networking programs to enhance engagement for creating a legacy</li>
+                            <li>Facilitating student-alumni connections to foster mentorship and knowledge sharing</li>
+                            <li>Developed a dashboard to implement a framework and track committee performance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements -->
+    <section id="achievements">
+        <h2>Achievements & Extra-Curriculars</h2>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>Achievements</h3>
+                    <button class="accordion">View All</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Awarded School Color for leadership, among 200+ students for 3 student initiatives (2021)</li>
+                            <li>Recognized for executing 5+ intra-school quiz competitions with 50+ participants (2021)</li>
+                            <li>Recognized with an Honor Award for impactful contribution to 5+ Literary Events (2021)</li>
+                            <li>Attained multiple accolades as a Model United Nations participant over 3+ years (2019)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>Competitions</h3>
+                    <button class="accordion">View Wins</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Clinched National 2nd Runner-up among 700 teams at IIT Jodhpur case competition (2024)</li>
+                            <li>National 2nd Runner-up (3/400+ teams) at Arthyatra organized by IIM Bodhgaya (2023)</li>
+                            <li>Secured 2nd Runner-up in Quantum Quarters, Shaheed Bhagat Singh College (2023)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>Certifications</h3>
+                    <button class="accordion">View All</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Six Sigma Green Belt Certification from KPMG Assurance and Consulting Services (2025)</li>
+                            <li>Diploma Course in Human Resource Management for foundations of HR (2024)</li>
+                            <li>Tableau for HR: HR Analytics and Visualizations for data driven decisions (2024)</li>
+                            <li>Foundation Level in Programming and Data Science from IIT Madras (2024)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>Others</h3>
+                    <button class="accordion">View Initiatives</button>
+                    <div class="panel">
+                        <ul>
+                            <li>Led an 8-member team as Chief Editor publishing 23 articles in a 4-page newspaper</li>
+                            <li>Mentored 60 aspirants for their Interview Preparation at AceIPM Internship with 15% success rate</li>
+                            <li>Developed an end-to-end Fellowship program as part of HR Internship at SSRDP Bangalore</li>
+                            <li>Spearheaded the farewell committee of 6+ members, managing ₹ 2.1 Lakh for 150+ students</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2>Get in Touch</h2>
+        <p><strong>Email:</strong> <a href="mailto:ipm04jatink@iimrohtak.ac.in">ipm04jatink@iimrohtak.ac.in</a></p>
+        <p><strong>Phone:</strong> +91-7460024647</p>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        // Accordion
+        document.querySelectorAll('.accordion').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('active');
+                const panel = btn.nextElementSibling;
+                panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + 40 + 'px';
+            });
+        });
+
+        // Timeline Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.timeline-item').forEach((item, i) => {
+                        setTimeout(() => item.classList.add('visible'), i * 200);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+        document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+    </script>
+</body>
+</html>
